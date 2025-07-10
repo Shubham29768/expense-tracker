@@ -18,13 +18,36 @@ function SignUp() {
   const navigate = useNavigate();
 
   //Handle Sign up Form Submit
-  const handleSignUp = async (e) =>{}
+  const handleSignUp = async (e) =>{
+     e.preventDefault();
+
+     let profileImageURL ="";
+
+     if (!fullName){
+      setError("please enter your name");
+      return;
+     }
+
+     if(!validateEmail(email)){
+      setError("Please enter a valid email address");
+      return;
+     }
+
+     if(!password){
+      setError("please enter the password");
+      return;
+     }
+
+     setError("");
+
+     // SignUp Api call
+  };
   return (
     <AuthLayout>
       <div className="lg:w-[to-100%] h-auto md:h-full mt-10 md:mt-0 flex flex-col justify-center">
         <h3 className="text-xl font-semibold text-black">Create an Account</h3>
           <p className="text-xs text-slate-700 mt-[5px] mb-6">
-            Jion us today by entering your details below
+            Join us today by entering your details below
           </p>
 
           <form onSubmit={handleSignUp}>
@@ -55,12 +78,24 @@ function SignUp() {
           />
           </div>
             </div>
+            {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
+            
+                      <button type="submit" className="btn-primary">
+                        SIGNUP
+                      </button>
+                      
+                      <p className="txet-[13px] text-slate-800 mt-3">
+                        Already have an acchoun?{" "}
+                        <Link className="font-medium text-primary underline" to="/login">
+                        Login
+                        </Link>
+                      </p>
 
           </form>
       </div>
       
     </AuthLayout>
-  )
-}
+  );
+};
 
 export default SignUp
