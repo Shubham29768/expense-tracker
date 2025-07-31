@@ -1,10 +1,12 @@
-import { useContext , useEffect} from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosinstance";
 import { API_PATHS } from "../utils/apiPaths";
+
 export const useUserAuth = () => {
-  const {user, updateUser, clearUser} = UserContext(UserContext);
+  // ✅ FIX: useContext instead of calling UserContext directly
+  const { user, updateUser, clearUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,7 +17,7 @@ export const useUserAuth = () => {
     const fetchUserInfo = async () => {
       try {
         const response = await axiosInstance.get(API_PATHS.AUTH.GET_USER_INFO);
-        
+
         if (isMounted && response.data) {
           updateUser(response.data);
         }
@@ -28,10 +30,10 @@ export const useUserAuth = () => {
       }
     };
 
-    fetchUserInfo();  
+    fetchUserInfo();
 
     return () => {
-        isMounted = false;
+      isMounted = false;
     };
-    }, [updateUser, clearUser,navigate]);
+  }, [user, updateUser, clearUser, navigate]);
 };
