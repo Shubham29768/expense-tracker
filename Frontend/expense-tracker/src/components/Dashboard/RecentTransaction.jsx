@@ -12,9 +12,11 @@ const categoryIcons = {
   Food: <LuUtensils />,
 };
 
-const RecentTransactions = ({ transactions, onSeeMore }) => {
+const RecentTransactions = ({ transactions, onSeeMore, className }) => {
   return (
-    <div className="card w-full max-h-[300px] overflow-y-auto rounded-xl shadow-sm p-4 bg-white">
+    <div
+      className={`card w-full h-full min-h-[400px] flex flex-col rounded-xl shadow-sm p-4 bg-white ${className || ""}`}
+    >
       {/* Header */}
       <div className="flex items-center justify-between">
         <h5 className="text-lg font-semibold">Recent Transactions</h5>
@@ -27,12 +29,12 @@ const RecentTransactions = ({ transactions, onSeeMore }) => {
       </div>
 
       {/* Transactions list */}
-      <div className="mt-6 space-y-2">
+      <div className="mt-6 space-y-2 flex-grow overflow-y-auto">
         {transactions?.slice(0, 5)?.map((item, index) => (
           <TransactionInfoCard
-            key={`${item._id || "no-id"}-${index}`} // Prevent duplicate key warning
+            key={`${item._id || "no-id"}-${index}`}
             title={item.type === "expense" ? item.category : item.source}
-            icon={categoryIcons[item.category] || categoryIcons["Salary"]} // Fallback icon
+            icon={categoryIcons[item.category] || categoryIcons["Salary"]}
             date={moment(item.date).format("Do MMM YYYY")}
             amount={item.amount}
             type={item.type}

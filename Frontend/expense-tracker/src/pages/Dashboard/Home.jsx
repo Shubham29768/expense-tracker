@@ -11,6 +11,7 @@ import { IoMdCard } from "react-icons/io";
 import { addThousandsSeparator } from "../../utils/helper";
 import InfoCard from "../../components/Cards/InfoCard";
 import RecentTransactions from "../../components/Dashboard/RecentTransaction"
+import FinanceOverview from "../../components/Dashboard/FinanceOverview";
 
 const Home = () => {
   useUserAuth();
@@ -42,7 +43,7 @@ const Home = () => {
   return (
     <DashboardLayout activeMenu="Dashboard">
       <div className="my-5 mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/*<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <InfoCard
             icon={<IoMdCard />}
             label="Total Balance"
@@ -63,15 +64,23 @@ const Home = () => {
             value={addThousandsSeparator(dashboardData?.totalExpense || 0)}
             color="bg-red-500"
           />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        </div>*/}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
   <RecentTransactions
     transactions={dashboardData?.recentTransactions}
     onSeeMore={() => navigate("/expense")}
+    className="h-full"
   />
 
+  <FinanceOverview
+    totalBalance={dashboardData?.totalBalance || 0}
+    totalIncome={dashboardData?.totalIncome || 0}
+    totalExpense={dashboardData?.totalExpense || 0}
+    className="h-full"
+  />
+</div>
 
-        </div>
+
       </div>
     </DashboardLayout>
   );
