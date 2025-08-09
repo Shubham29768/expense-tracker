@@ -77,10 +77,10 @@ const lastTransactions = [
            type:"income",
         })
     ),
-    ...(await Income.find({ userId }).sort({ date: -1}).limit(5)).map(
+    ...(await Expense.find({ userId }).sort({ date: -1}).limit(5)).map(
         (txn) => ({
            ...txn.toObject(),
-           type:"income",
+           type:"expense",
         })
     ),
     ].sort((a, b) => b.date - a.date); // Sort latest first
@@ -90,8 +90,8 @@ const lastTransactions = [
     totalBalance:
         (totalIncome [0]?.total || 0) - (totalExpense [0]?.total || 0),
     totalIncome: totalIncome [0]?.total || 0,
-    totalExpenses: totalExpense [0]?.total || 0,
-    last30DaysExpenses: {
+    totalExpense: totalExpense [0]?.total || 0,
+    last30daysExpenses: {
     total: expensesLast30Days,
     transactions: last30DaysExpenseTransactions,
 

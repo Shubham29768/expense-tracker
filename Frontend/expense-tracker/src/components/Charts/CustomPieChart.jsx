@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   PieChart,
   Pie,
@@ -15,8 +15,41 @@ const CustomPieChart = ({
   label,
   totalAmount,
   colors,
-  showTextAnchor,
 }) => {
+  // ✅ Custom center label with proper spacing
+  const renderCenterLabel = () => {
+    return (
+      <>
+        {/* First line - Label */}
+        <text
+          x="50%"
+          y="50%"
+          dy={-10} // move label up
+          textAnchor="middle"
+          dominantBaseline="central"
+          fill="#555"
+          fontSize="14px"
+        >
+          {label}
+        </text>
+
+        {/* Second line - Amount */}
+        <text
+          x="50%"
+          y="50%"
+          dy={15} // move amount down
+          textAnchor="middle"
+          dominantBaseline="central"
+          fill="#000"
+          fontSize="22px"
+          fontWeight="bold"
+        >
+          {totalAmount}
+        </text>
+      </>
+    );
+  };
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <PieChart>
@@ -29,43 +62,17 @@ const CustomPieChart = ({
           outerRadius={130}
           innerRadius={100}
           labelLine={false}
-         >
+          label={renderCenterLabel} // ✅ Inject custom label
+        >
           {data.map((entry, index) => (
-           <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-            ))}
+            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+          ))}
         </Pie>
-        <Tooltip content={<CustomTooltip/>}/>
-        <Legend content={<CustomLegend/>} />
-
-        {showTextAnchor && (
-           <>
-            <text
-            x="50%"
-            y="50%"
-            dy={-25}
-            textAnchor="middle"
-            fill="#666"
-            fontSize="14px"
-        >
-            {label}
-        </text>
-        <text
-        x="50%"
-        y="50%"
-        dy={8}
-        textAnchor="middle"
-        fill="#333"
-        fontSize="24px"
-        fontWeight="semi-bold"
-        >
-            {totalAmount}
-        </text>
-        </>
-        )}
-        </PieChart>
-        </ResponsiveContainer>
-  )
-        
-}; 
+        <Tooltip content={<CustomTooltip />} />
+        <Legend content={<CustomLegend />} />
+      </PieChart>
+    </ResponsiveContainer>
+  );
+};
 
 export default CustomPieChart;
