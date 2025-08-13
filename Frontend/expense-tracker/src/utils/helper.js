@@ -36,3 +36,12 @@ export const prepareExpenseBarChartData = (data = []) => {
   
   return chartData;
 };
+
+export const prepareIncomePieChartData = (data = []) => {
+  const chartData = data.map((item) => ({
+    name: item?.source,
+    amount: item?.amount,
+  }));
+  
+  return chartData;
+};

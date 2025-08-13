@@ -11,10 +11,10 @@ import CustomTooltip from './CustomTooltip';
 import CustomLegend from './CustomLegend';
 
 const CustomPieChart = ({
-  data,
+  data = [],
   label,
   totalAmount,
-  colors,
+  colors = [],
 }) => {
   // ✅ Custom center label with proper spacing
   const renderCenterLabel = () => {
@@ -54,7 +54,7 @@ const CustomPieChart = ({
     <ResponsiveContainer width="100%" height="100%">
       <PieChart>
         <Pie
-          data={data}
+          data={data || []}
           dataKey="amount"
           nameKey="name"
           cx="50%"
@@ -64,7 +64,7 @@ const CustomPieChart = ({
           labelLine={false}
           label={renderCenterLabel} // ✅ Inject custom label
         >
-          {data.map((entry, index) => (
+          {(data || []).map((entry, index) => (
             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
           ))}
         </Pie>

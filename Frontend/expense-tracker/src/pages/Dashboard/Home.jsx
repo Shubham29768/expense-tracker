@@ -14,6 +14,7 @@ import RecentTransactions from "../../components/Dashboard/RecentTransaction"
 import FinanceOverview from "../../components/Dashboard/FinanceOverview";
 import ExpenseTransaction from "../../components/Dashboard/ExpenseTransaction";
 import Last30DaysExpenses from "../../components/Dashboard/Last30DaysExpenses.jsx";
+import RecentIncomeWithChart from "../../components/Dashboard/RecentIncomeWithChart.jsx";
 
 const Home = () => {
   useUserAuth();
@@ -40,7 +41,12 @@ const Home = () => {
 
   useEffect(() => {
     fetchDashboardData();
-  }, []); 
+  }, []);
+
+  useEffect(() => {
+    console.log("Home - Dashboard data:", dashboardData);
+    console.log("Home - Last 60 days income data:", dashboardData?.last60DaysIncome);
+  }, [dashboardData]); 
 
   return (
     <DashboardLayout activeMenu="Dashboard">
@@ -96,12 +102,21 @@ const Home = () => {
             />
           );
         })()}
+
         <Last30DaysExpenses
          data={dashboardData?.last30daysExpenses?.transactions || []}
          />
+
+        <RecentIncomeWithChart
+          data={dashboardData?.last60DaysIncome?.transactions?.length > 0 
+            ? dashboardData?.last60DaysIncome?.transactions 
+            : dashboardData?.recentTransactions?.filter(txn => txn?.type === "income") || []
+          }
+          totalIncome={dashboardData?.last60DaysIncome?.total || dashboardData?.totalIncome || 0}
+        />
+
+        
       </div>
-
-
       </div>
     </DashboardLayout>
   );
