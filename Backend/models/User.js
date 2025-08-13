@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const bcrypt = require("bcryptjs");
-const { Emoji } = require("emoji-picker-react");
 
 const UserSchema = new mongoose.Schema(
   {

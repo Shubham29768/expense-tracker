@@ -13,6 +13,7 @@ import InfoCard from "../../components/Cards/InfoCard";
 import RecentTransactions from "../../components/Dashboard/RecentTransaction"
 import FinanceOverview from "../../components/Dashboard/FinanceOverview";
 import ExpenseTransaction from "../../components/Dashboard/ExpenseTransaction";
+import Last30DaysExpenses from "../../components/Dashboard/Last30DaysExpenses.jsx";
 
 const Home = () => {
   useUserAuth();
@@ -67,23 +68,38 @@ const Home = () => {
           />
         </div>}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-     <RecentTransactions
-     transactions={dashboardData?.recentTransactions}
-     onSeeMore={() => navigate("/expense")}
-     className="h-full"
-   />
+        <RecentTransactions
+          transactions={dashboardData?.recentTransactions}
+          onSeeMore={() => navigate("/expense")}
+          className="h-full"
+        />
 
-     <FinanceOverview
-    totalBalance={dashboardData?.totalBalance || 0}
-    totalIncome={dashboardData?.totalIncome || 0}
-    totalExpense={dashboardData?.totalExpense || 0}
-    className="h-full"
-  />
-  <ExpenseTransaction
-    transactions = {dashboardData?.last30daysExpenses?.transactions || []}
-    onSeeMore ={() => navigate("/expense")}
-    />
-</div>
+        <FinanceOverview
+          totalBalance={dashboardData?.totalBalance || 0}
+          totalIncome={dashboardData?.totalIncome || 0}
+          totalExpense={dashboardData?.totalExpense || 0}
+          className="h-full"
+        />
+
+        {(() => {
+          // Prefer last 30 days expenses; if empty, fall back to recent expense transactions
+          const last30DaysExpenses = dashboardData?.last30daysExpenses?.transactions || [];
+          const fallbackRecentExpenses = (dashboardData?.recentTransactions || []).filter(
+            (txn) => txn?.type === "expense"
+          );
+          const expensesForWidget = last30DaysExpenses.length > 0 ? last30DaysExpenses : fallbackRecentExpenses;
+
+          return (
+            <ExpenseTransaction
+              transactions={expensesForWidget}
+              onSeeMore={() => navigate("/expense")}
+            />
+          );
+        })()}
+        <Last30DaysExpenses
+         data={dashboardData?.last30daysExpenses?.transactions || []}
+         />
+      </div>
 
 
       </div>
