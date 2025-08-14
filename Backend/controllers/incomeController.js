@@ -41,10 +41,21 @@ exports.getAllIncome = async (req, res) =>{
 
 // Delete Income Source
 exports.deleteIncome = async (req, res) =>{
+    const userId = req.user.id;
+    const incomeId = req.params.id;
+
     try{
-        await Income.findByIdAndDelete(req.params.id);
-        res.json({ message: "Income delete seccessfully"});
+        // Check if income exists and belongs to the user
+        const income = await Income.findOne({ _id: incomeId, userId: userId });
+        
+        if (!income) {
+            return res.status(404).json({ message: "Income not found or you don't have permission to delete it" });
+        }
+
+        await Income.findByIdAndDelete(incomeId);
+        res.json({ message: "Income deleted successfully" });
     } catch (error) {
+        console.error("Delete income error:", error);
         res.status(500).json({message: "Server Error"});
     }
 };
