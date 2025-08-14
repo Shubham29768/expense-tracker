@@ -15,6 +15,7 @@ import FinanceOverview from "../../components/Dashboard/FinanceOverview";
 import ExpenseTransaction from "../../components/Dashboard/ExpenseTransaction";
 import Last30DaysExpenses from "../../components/Dashboard/Last30DaysExpenses.jsx";
 import RecentIncomeWithChart from "../../components/Dashboard/RecentIncomeWithChart.jsx";
+import RecentIncome from "../../components/Dashboard/RecentIncome.jsx";
 
 const Home = () => {
   useUserAuth();
@@ -113,6 +114,11 @@ const Home = () => {
             : dashboardData?.recentTransactions?.filter(txn => txn?.type === "income") || []
           }
           totalIncome={dashboardData?.last60DaysIncome?.total || dashboardData?.totalIncome || 0}
+        />
+
+        <RecentIncome
+          transactions={dashboardData?.last60DaysIncome?.transactions || []}
+          onSeeMore={() => navigate("/income")}
         />
 
         
